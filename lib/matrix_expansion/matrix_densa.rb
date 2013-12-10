@@ -225,7 +225,7 @@ module MatrixExpansion
                 end
             end
             c
-        endy
+        end
     end
 end
 

@@ -48,7 +48,7 @@ module MatrixExpansion
                 when "mostrar"
                     @operation = :mostrar
                 else
-                    puts "Opción incorrecta", op_type
+                    puts "Opcion incorrecta", op_type
             end
             
             if block_given?  
@@ -63,35 +63,67 @@ module MatrixExpansion
         end
         
         
-    protected
-    def operand (matriz)
-        raise ArgumentError , 'Tipo invalido' unless matriz.is_a? Array
-      
-        @operands << Matriz_Densa.read(matriz)
+        protected
+        def operand (matriz)
+            raise ArgumentError , 'Tipo invalido' unless matriz.is_a? Array
+          
+            @operands << Matriz_Densa.read(matriz)
+        end
+        
+        def option(opcion)
+            raise ArgumentError , 'Tipo invalido' unless opcion.is_a? String
+            opc = opcion.downcase
+          
+            case opc
+                when "densa"
+                    @result_mode = :densa
+                when "dispersa"
+                    @result_mode = :dispersa
+                when "auto"
+                    @result_mode = :auto
+                when "console"
+                    @mode = :console
+                when "file"
+                    @mode = :file
+                when "none"
+                    @mode = :none
+                else
+                puts "Opcion incorrecta", opc
+            end
+        end
+        
+        def ejecucion
+            case @operation
+                when :mostrar
+                    raise RuntimeError , 'Numero de operandos invalidos' unless @operands.size() == 1
+                    
+                    @result = @operands[0] # Densa
+                    if(@result_mode == :dispersa)
+                        @result = Matriz_Dispersa.densa_a_dispersa(@operands[0])
+                    elsif(@result_mode == :auto)
+                        if(@result.null_percent > 0.6) # Pasar a dispersa si tiene más de un 60% de elementos nulos
+                            @result = Matriz_Dispersa.densa_a_dispersa(@operands[0])
+                        end
+                    end
+                
+                    if(@mode == :console)
+                        puts @result.to_s
+                    elsif(@mode == :file)
+                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                    end
+                else
+                    puts "Opcion incorrecta", @operation
+            end
+        end
     end
+end
+
+
+
+ejemplo = MatrixExpansion::MatrizDSL.new("mostrar") do 
+    option "densa" 
+    option "console"
     
-    def option(opcion)
-      raise ArgumentError , 'Tipo invalido' unless opcion.is_a? String
-      opc = opcion.downcase
-      
-      case opc
-        when "densa"
-          @modo_resultado = :densa
-        when "dispersa"
-          @modo_resultado = :dispersa
-        when "auto"
-          @modo_resultado = :auto
-        when "console"
-          @modo = :console
-        when "file"
-          @modo = :file
-        when "none"
-          @modo = :none
-        else
-          puts "Opción incorrecta", opc
-      end
-    end
-    
-    end
+    operand [[1,2,3],[4,5,6],[7,8,9]]  
 end
     
