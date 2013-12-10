@@ -19,12 +19,12 @@
 #        Definicion de la clase Matriz_DSL compuesta por:
 #
 
-require "./lib/math_expansion/matriz.rb"
-require "./lib/math_expansion/matriz_dispersa.rb"
-require "./lib/math_expansion/matriz_densa.rb"
-require "./lib/math_expansion/matriz_operaciones.rb"
+require "./lib/matrix_expansion/matrix.rb"
+require "./lib/matrix_expansion/matrix_dispersa.rb"
+require "./lib/matrix_expansion/matrix_densa.rb"
+require "./lib/matrix_expansion/matrix.rb"
 
-module MathExpansion
+module MatrixExpansion
     class MatrizDSL < Matriz
         attr_accessor :result
         
@@ -61,6 +61,36 @@ module MathExpansion
             
             ejecucion
         end
+        
+        
+    protected
+    def operand (matriz)
+        raise ArgumentError , 'Tipo invalido' unless matriz.is_a? Array
+      
+        @operands << Matriz_Densa.read(matriz)
+    end
+    
+    def option(opcion)
+      raise ArgumentError , 'Tipo invalido' unless opcion.is_a? String
+      opc = opcion.downcase
+      
+      case opc
+        when "densa"
+          @modo_resultado = :densa
+        when "dispersa"
+          @modo_resultado = :dispersa
+        when "auto"
+          @modo_resultado = :auto
+        when "console"
+          @modo = :console
+        when "file"
+          @modo = :file
+        when "none"
+          @modo = :none
+        else
+          puts "Opción incorrecta", opc
+      end
+    end
     
     end
 end

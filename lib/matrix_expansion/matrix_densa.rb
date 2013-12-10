@@ -213,6 +213,19 @@ module MatrixExpansion
             end
             max
         end
+        
+        # Método que lee el array que se le pasa por parámetro y devuelve una matriz densa iniciaizada con los valores del array.
+        def self.read(array)
+            raise ArgumentError , 'Tipo invalido' unless array.is_a? Array
+            
+            c = Matriz_Densa.new(array.size(), array[0].size())
+            array.each_index do |i|
+                array[i].each_index do |j|
+                    c.matrix[i][j] = array[i][j]
+                end
+            end
+            c
+        endy
     end
 end
 
