@@ -32,7 +32,7 @@ module MatrixExpansion
             raise ArgumentError , 'Tipo invalido' unless op_type.is_a? String
             
             @operands = []
-            @result_mode = :auto
+            @result_mode = :correccion_auto
             @result = nil
             @mode = :console
             @operation = :mostrar
@@ -79,8 +79,8 @@ module MatrixExpansion
                     @result_mode = :densa
                 when "dispersa"
                     @result_mode = :dispersa
-                when "auto"
-                    @result_mode = :auto
+                when "correccion_auto"
+                    @result_mode = :correccion_auto
                 when "console"
                     @mode = :console
                 when "file"
@@ -95,17 +95,59 @@ module MatrixExpansion
         def ejecucion
             case @operation
                 when :mostrar
-                    raise RuntimeError , 'Numero de operandos invalidos' unless @operands.size() == 1
+                    raise RuntimeError , 'ERROR en el numero de operandos' unless @operands.size() == 1
                     
-                    @result = @operands[0] # Densa
+                    @result = @operands[0] # Matriz densa
                     if(@result_mode == :dispersa)
                         @result = Matriz_Dispersa.densa_a_dispersa(@operands[0])
-                    elsif(@result_mode == :auto)
-                        if(@result.null_percent > 0.6) # Pasar a dispersa si tiene más de un 60% de elementos nulos
+                    elsif(@result_mode == :correcion_auto)
+                        if(@result.porcentaje_nulos > 0.6) # Pasar a dispersa si tiene más de un 60% de elementos nulos
                             @result = Matriz_Dispersa.densa_a_dispersa(@operands[0])
                         end
                     end
                 
+                    if(@mode == :console)
+                        puts @result.to_s
+                    elsif(@mode == :file)
+                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                    end
+                    
+                when :suma
+                    raise RuntimeError , 'ERROR en el numero de operandos' unless @operands.size() == 2
+                    
+                    @result = @operands[0] + @operands[1] # Matriz densa
+                    if(@result_mode == :dispersa or (@result_mode == :correccion_auto and @result.porcentaje_nulos >= 0.6))
+                        @result = Matriz_Dispersa.densa_a_dispersa(@result)
+                    end
+                    
+                    if(@mode == :console)
+                        puts @result.to_s
+                    elsif(@mode == :file)
+                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                    end
+                    
+                when :resta
+                    raise RuntimeError , 'ERROR en el numero de operandos' unless @operands.size() == 2
+                    
+                    @result = @operands[0] - @operands[1] # Matriz densa
+                    if(@result_mode == :dispersa or (@result_mode == :correccion_auto and @result.porcentaje_nulos >= 0.6))
+                        @result = Matriz_Dispersa.densa_a_dispersa(@result)
+                    end
+                    
+                    if(@mode == :console)
+                        puts @result.to_s
+                    elsif(@mode == :file)
+                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                    end
+                    
+                when :producto
+                    raise RuntimeError , 'ERROR en el numero de operandos' unless @operands.size() == 2
+                    
+                    @result = @operands[0] * @operands[1] # Matriz densa
+                    if(@result_mode == :dispersa or (@result_mode == :correccion_auto and @result.porcentaje_nulos >= 0.6))
+                        @result = Matriz_Dispersa.densa_a_dispersa(@result)
+                    end
+                    
                     if(@mode == :console)
                         puts @result.to_s
                     elsif(@mode == :file)
@@ -120,10 +162,4 @@ end
 
 
 
-ejemplo = MatrixExpansion::MatrizDSL.new("mostrar") do 
-    option "densa" 
-    option "console"
-    
-    operand [[1,2,3],[4,5,6],[7,8,9]]  
-end
     
