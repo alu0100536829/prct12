@@ -1,0 +1,15 @@
+Wed, 11 Dec 2013 04:52:39 -0500
+./test/tc_matrix.rb	Tue, 10 Dec 2013 14:13:26 -0500
+./Guardfile	Tue, 10 Dec 2013 14:13:26 -0500
+./Rakefile	Tue, 10 Dec 2013 14:13:26 -0500
+./LICENSE	Tue, 10 Dec 2013 14:13:26 -0500
+./Gemfile	Tue, 10 Dec 2013 14:13:26 -0500
+./spec/matrix_spec.rb	Tue, 10 Dec 2013 18:38:13 -0500
+./lib/matrix_expansion/matrix_densa.rb	Tue, 10 Dec 2013 17:10:34 -0500
+./lib/matrix_expansion/version.rb	Tue, 10 Dec 2013 14:13:26 -0500
+./lib/matrix_expansion/gcd.rb	Tue, 10 Dec 2013 14:13:26 -0500
+./lib/matrix_expansion/fraccion.rb	Tue, 10 Dec 2013 14:13:26 -0500
+./lib/matrix_expansion/matrix.rb	Tue, 10 Dec 2013 14:13:26 -0500
+./lib/matrix_expansion/matrix_dispersa.rb	Tue, 10 Dec 2013 14:13:26 -0500
+./lib/matrix_expansion/matriz_DSL.rb	Tue, 10 Dec 2013 18:55:21 -0500
+./lib/matrix_expansion.rb	Tue, 10 Dec 2013 18:25:27 -0500
