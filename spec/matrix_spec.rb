@@ -39,6 +39,66 @@ describe MatrixExpansion::Matriz do
     end
 end
 
+describe MatrixExpansion::MatrizDSL do
+    
+    describe " # Almacenamiento de operandos y matrices." do
+        it " # Se debe poder leer una matriz." do
+            @m1 = MatrixExpansion::MatrizDSL.new("mostrar") do
+                option "none"        
+                option "correccion_auto"
+            
+                operand [[1,2],[3,4]]
+            end
+            @m1.result.to_s.should == "1\t2\t\n3\t4\t\n"
+        end
+    end
+
+    describe " # Operaciones con matrices." do
+        it " # Se deben poder sumar matrices." do
+            @m1 = MatrixExpansion::MatrizDSL.new("suma") do
+                option "file"        
+                option "correccion_auto"
+                
+                operand [[-1, -1],[1, 1]]
+                operand [[1,1], [3, -1]]
+            end
+            @m1.result.to_s.should == "\n(1,0)=>4 \n"
+            
+            @m2 = MatrixExpansion::MatrizDSL.new("suma") do
+                option "none"        
+                option "densa"
+                
+                operand [[-1, -1],[1, 1]]
+                operand [[1,1], [3, -1]]
+            end
+            @m2.result.to_s.should == "0\t0\t\n4\t0\t\n"
+        end
+        
+        it " # Se deben poder restar matrices." do
+            @m1 = MatrixExpansion::MatrizDSL.new("resta") do
+                option "none"
+                option "dispersa"
+                
+                operand [[Fraccion.new(2,5),Fraccion.new(2,5)],[Fraccion.new(2,5),Fraccion.new(2,5)]]
+                operand [[Fraccion.new(2,5),Fraccion.new(2,5)],[Fraccion.new(2,5),Fraccion.new(1,5)]]
+            end
+            @m1.result.to_s.should == "\n(1,1)=>1/5 \n"
+        end
+        
+        it " # Se deben poder multiplicar matrices." do
+            @m1 = MatrixExpansion::MatrizDSL.new("producto") do
+                option "none"
+                option "correccion_auto"
+                
+                operand [[2,0,1],[3,0,0],[5,1,1]]
+                operand [[1,0,1],[1,2,1],[1,1,0]]
+            end
+            @m1.result.to_s.should == "3\t1\t2\t\n3\t0\t3\t\n7\t3\t6\t\n"
+        end
+    end
+end
+
+
 describe MatrixExpansion::Matriz_Densa do
     
     before :each do

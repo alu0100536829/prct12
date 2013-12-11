@@ -20,22 +20,21 @@
 #
 
 require "./lib/matrix_expansion/matrix.rb"
-require "./lib/matrix_expansion/matrix_dispersa.rb"
-require "./lib/matrix_expansion/matrix_densa.rb"
-require "./lib/matrix_expansion/matrix.rb"
 
 module MatrixExpansion
     class MatrizDSL < Matriz
         attr_accessor :result
         
+        # Función que permite usar un DSL con lenguaje más sencillo para realizar operaciones matrices.
+        # Se le pasan por parámetro el tipo de operacion y un bloque con el resto de opciones y operandos.
         def initialize(op_type, &block)
             raise ArgumentError , 'Tipo invalido' unless op_type.is_a? String
             
-            @operands = []
-            @result_mode = :correccion_auto
-            @result = nil
-            @mode = :console
-            @operation = :mostrar
+            @operands = []      # Aquí se almacenan los operandos, es decir, las matrices
+            @result_mode = :correccion_auto     # modo para mostrar el resultado
+            @result = nil   # Resultado de operación
+            @mode = :console    # Modo de ejecución
+            @operation = :mostrar   # tipo operación a realizar
             
             
             case op_type
@@ -62,7 +61,7 @@ module MatrixExpansion
             ejecucion
         end
         
-        
+        # Método que recoge los operandos pasados (matrices)
         protected
         def operand (matriz)
             raise ArgumentError , 'Tipo invalido' unless matriz.is_a? Array
@@ -70,6 +69,7 @@ module MatrixExpansion
             @operands << Matriz_Densa.read(matriz)
         end
         
+        # Método que asigna la opción seleccionada
         def option(opcion)
             raise ArgumentError , 'Tipo invalido' unless opcion.is_a? String
             opc = opcion.downcase
@@ -80,18 +80,19 @@ module MatrixExpansion
                 when "dispersa"
                     @result_mode = :dispersa
                 when "correccion_auto"
-                    @result_mode = :correccion_auto
+                    @result_mode = :correccion_auto     # Comprueba automáticamente si es necesaria la conversión a dispersa del resultado
                 when "console"
-                    @mode = :console
+                    @mode = :console    # Mostrar resultado por consola
                 when "file"
-                    @mode = :file
+                    @mode = :file   # Crear un fichero que contiene el resultado
                 when "none"
-                    @mode = :none
+                    @mode = :none   # Modo que no hace nada, sino devolver el resultado sin mostrarlo
                 else
                 puts "Opcion incorrecta", opc
             end
         end
         
+        # Método que implementa las diferentes operaciones posibles en sus diferentes modos de ejecución.
         def ejecucion
             case @operation
                 when :mostrar
@@ -109,7 +110,7 @@ module MatrixExpansion
                     if(@mode == :console)
                         puts @result.to_s
                     elsif(@mode == :file)
-                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                        File.open('resultado.txt', 'w') { |file| file.write(@result.to_s) }
                     end
                     
                 when :suma
@@ -123,7 +124,7 @@ module MatrixExpansion
                     if(@mode == :console)
                         puts @result.to_s
                     elsif(@mode == :file)
-                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                        File.open('resultado.txt', 'w') { |file| file.write(@result.to_s) }
                     end
                     
                 when :resta
@@ -137,7 +138,7 @@ module MatrixExpansion
                     if(@mode == :console)
                         puts @result.to_s
                     elsif(@mode == :file)
-                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                        File.open('resultado.txt', 'w') { |file| file.write(@result.to_s) }
                     end
                     
                 when :producto
@@ -151,7 +152,7 @@ module MatrixExpansion
                     if(@mode == :console)
                         puts @result.to_s
                     elsif(@mode == :file)
-                        File.open('output.me', 'w') { |file| file.write(@result.to_s) }
+                        File.open('resultado.txt', 'w') { |file| file.write(@result.to_s) }
                     end
                 else
                     puts "Opcion incorrecta", @operation
@@ -159,7 +160,5 @@ module MatrixExpansion
         end
     end
 end
-
-
 
     
