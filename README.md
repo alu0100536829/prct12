@@ -4,6 +4,7 @@
     
 Gema que permite el uso de matrices densas y dispersas a través de la herencia de una matriz simple. Todas las operaciones con números y fracciones incluidas.
 Métodos realizados con programación funcional.
+Añadida clase que permite programar operaciones con matrices a través de un lenguaje DSL más manejable para matemáticos.
 
 ## Instalación
 
