@@ -50,6 +50,7 @@ module MatrixExpansion
                     puts "Opcion incorrecta", op_type
             end
             
+            #Comprueba si se ha pasado un bloque correctamente
             if block_given?  
                 if block.arity == 1
                     yield self
